@@ -18,11 +18,11 @@ private:
   void callback()
   {
     auto count = this->count_subscribers("test");
-    RCLCPP_INFO(this->get_logger(), "count_subscribers: %d", count);
+    RCLCPP_INFO(this->get_logger(), "count_subscribers: %ld", count);
 
     // This does work with remapping
     auto pub_count = pub_->get_subscription_count();
-    RCLCPP_INFO(this->get_logger(), "publisher->get_subscription_count: %d", pub_count);
+    RCLCPP_INFO(this->get_logger(), "publisher->get_subscription_count: %ld", pub_count);
 
     geometry_msgs::msg::Twist twist;
     twist.linear.x = 42.0;
