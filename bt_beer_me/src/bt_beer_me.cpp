@@ -19,11 +19,12 @@
 
 #include <nav2_action.hpp>
 #include <open_fridge_door_action.hpp>
+#include <ros2_singletons.hpp>
 
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("bt_beer_me");
+  auto node = getNode();
 
   std::string behavior_tree_xml =
     node->declare_parameter("behavior_tree_xml", std::string("/home/fergs/humble/workspace/src/ros2_sandbox/bt_beer_me/behavior_trees/beer_me.xml"));
@@ -74,6 +75,6 @@ int main(int argc, char **argv)
   }
 
   rclcpp::shutdown();
-  
+
   return 0;
 }

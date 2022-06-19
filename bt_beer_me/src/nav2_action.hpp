@@ -20,6 +20,7 @@
 #include <nav2_msgs/action/navigate_to_pose.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
+#include <ros2_singletons.hpp>
 #include <tf2/utils.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
@@ -52,8 +53,7 @@ public:
   BT::NodeStatus tick() override
   {
     // Get node for ROS2 interfaces
-    rclcpp::Node::SharedPtr node =
-      config().blackboard->template get<rclcpp::Node::SharedPtr>("node");
+    auto node = getNode();
 
     if (!node)
     {
@@ -73,7 +73,7 @@ public:
     if (!client_)
     {
       // Need to create action client
-      client_ = rclcpp_action::create_client<Nav2Pose>(node, "/navigate_to_pose");
+      client_ = getClient();
       if (!client_->wait_for_action_server(std::chrono::seconds(1)))
       {
         RCLCPP_ERROR(logger, "Timed out connecting to /navigate_to_pose");
@@ -124,6 +124,17 @@ private:
       goal_state_ = State::FAILED;
     }
     result_ = result.result;
+  }
+
+  static std::shared_ptr<rclcpp_action::Client<Nav2Pose>> getClient()
+  {
+    static std::shared_ptr<rclcpp_action::Client<Nav2Pose>> client;
+    auto node = getNode();
+    if (!client)
+    {
+      client = rclcpp_action::create_client<Nav2Pose>(node, "/navigate_to_pose");
+    }
+    return client;
   }
 
   std::shared_ptr<rclcpp_action::Client<Nav2Pose>> client_;
