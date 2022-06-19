@@ -1,0 +1,25 @@
+<!--
+  Behavior tree for getting a beer from the fridge and delivering it
+-->
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    <Sequence>
+      <Nav2Action goal="{fridge}" />
+      <!--
+      <DetectMarkerAction marker_id="1" marker_pose="{marker_pose}"/>
+      <MoveitAction joint_angles="{pre_grasp_joint_angles}" />
+      -->
+      <OpenFridgeDoorAction marker_pose="{marker_pose}" />
+      <!--
+      <BeerPerceptionAction target="{beer_pose}" />
+      <MoveitGraspAction target="{beer_pose}" />
+      <MoveitAction joint_angles="{transport_joint_angles}" />
+      <ImpedanceTrajectoryCloseDoorAction />
+      -->
+      <Nav2Action goal="{destination}" />
+      <!--
+      <MoveitAction joint_angles="{present_beer_joint_angles}" />
+      -->
+    </Sequence>
+  </BehaviorTree>
+</root>
