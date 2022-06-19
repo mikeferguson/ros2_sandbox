@@ -26,7 +26,7 @@ find_package(robot_impedance_controllers REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
-include_directories(src)
+include_directories(include)
 
 set(dependencies
   behaviortree_cpp_v3

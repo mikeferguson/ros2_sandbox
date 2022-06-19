@@ -17,9 +17,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <behaviortree_cpp_v3/bt_factory.h>
 
-#include <nav2_action.hpp>
-#include <open_fridge_door_action.hpp>
-#include <ros2_singletons.hpp>
+#include <bt_beer_me/nav2_action.hpp>
+#include <bt_beer_me/open_fridge_door_action.hpp>
+#include <bt_beer_me/ros2_singletons.hpp>
 
 int main(int argc, char **argv)
 {

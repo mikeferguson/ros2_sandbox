@@ -17,7 +17,6 @@
 #ifndef BT_BEER_ME_ROS2_SINGLETONS_HPP
 #define BT_BEER_ME_ROS2_SINGLETONS_HPP
 
-#include <iostream>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
@@ -28,11 +27,12 @@ rclcpp::Node::SharedPtr getNode()
 
   if (!node)
   {
-    std::cout << "CREATING NODE" << std::endl;
     node = rclcpp::Node::make_shared("bt_beer_me");
   }
 
   return node;
 }
+
+// TODO: tf2_buffer singleton
 
 #endif  // BT_BEER_ME_ROS2_SINGLETONS_HPP
