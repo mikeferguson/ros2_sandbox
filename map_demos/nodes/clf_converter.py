@@ -33,17 +33,21 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-'''This is a converter for the Intel Research Lab SLAM dataset
-   ( http://kaspar.informatik.uni-freiburg.de/~slamEvaluation/datasets/intel.clf )
-   to rosbag2'''
+
+"""
+This is a converter for the Intel Research Lab SLAM dataset to rosbag2.
+
+http://kaspar.informatik.uni-freiburg.de/~slamEvaluation/datasets/intel.clf
+"""
 
 from math import cos, pi, sin
+import sys
+
 from geometry_msgs.msg import TransformStamped
 import rclpy
 from rclpy.serialization import serialize_message
 import rosbag2_py
 from sensor_msgs.msg import LaserScan
-import sys
 from tf2_msgs.msg import TFMessage
 
 
@@ -94,7 +98,7 @@ class ClfConverter:
                 tokens = line.split(' ')
                 if len(tokens) <= 2 or tokens[0] == '#':
                     continue
-                
+
                 command = tokens[0]
                 stamp = rclpy.time.Time(seconds=float(tokens[-3]))
                 if command == 'FLASER':
@@ -102,7 +106,7 @@ class ClfConverter:
                     num_scans = int(tokens[1])
 
                     if num_scans != 180 or len(tokens) < num_scans + 9:
-                        rospy.logwarn("unsupported scan format")
+                        print('unsupported scan format')
                         continue
 
                     msg.header.frame_id = 'base_link'
@@ -117,7 +121,8 @@ class ClfConverter:
                     msg.ranges = [float(r) for r in tokens[2:(num_scans + 2)]]
                     writer.write('scan', serialize_message(msg), stamp.nanoseconds)
 
-                    odom_x, odom_y, odom_theta = [float(r) for r in tokens[(num_scans + 2):(num_scans + 5)]]
+                    odom_x, odom_y, odom_theta = \
+                        [float(r) for r in tokens[(num_scans + 2):(num_scans + 5)]]
                     tf_msg = self.make_tf_msg(odom_x, odom_y, odom_theta, stamp)
                     writer.write('tf', serialize_message(tf_msg), stamp.nanoseconds)
 
@@ -130,4 +135,3 @@ class ClfConverter:
 if __name__ == '__main__':
     converter = ClfConverter()
     converter.convert(sys.argv[1], sys.argv[2])
-    
