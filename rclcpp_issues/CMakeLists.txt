@@ -19,6 +19,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 add_executable(count_subscriber_issue src/count_subscriber_issue.cpp)
 target_include_directories(count_subscriber_issue PUBLIC
@@ -29,7 +30,16 @@ ament_target_dependencies(count_subscriber_issue
   rclcpp
 )
 
-install(TARGETS count_subscriber_issue
+add_executable(spin_issue src/spin_issue.cpp)
+target_include_directories(spin_issue PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+ament_target_dependencies(spin_issue
+  rclcpp
+  sensor_msgs
+)
+
+install(TARGETS count_subscriber_issue spin_issue
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
 
