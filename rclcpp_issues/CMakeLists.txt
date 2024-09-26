@@ -30,16 +30,7 @@ ament_target_dependencies(count_subscriber_issue
   rclcpp
 )
 
-add_executable(spin_issue src/spin_issue.cpp)
-target_include_directories(spin_issue PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(spin_issue
-  rclcpp
-  sensor_msgs
-)
-
-install(TARGETS count_subscriber_issue spin_issue
+install(TARGETS count_subscriber_issue
   EXPORT export_${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME})
 
