@@ -17,10 +17,21 @@ public:
 private:
   void callback(sensor_msgs::msg::PointCloud2::ConstSharedPtr cloud)
   {
-    std::cout << "got cloud" << std::endl;
+    if (image_count_ == 0)
+    {
+      first_image_ = this->now();
+    }
+    else
+    {
+      double elapsed = (this->now() - first_image_).seconds();
+      std::cout << "Recieved " << image_count_ + 1 << " messages at " << 1 / (elapsed / image_count_) << " hz" << std::endl;
+    }
+    ++image_count_;
   }
 
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_;
+  int image_count_;
+  rclcpp::Time first_image_;
 };
 
 int main(int argc, char ** argv)
